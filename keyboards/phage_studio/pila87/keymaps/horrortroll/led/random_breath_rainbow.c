@@ -38,13 +38,13 @@ static void doRandom_breath_rainbow(int i, effect_params_t* params) {
 }
 
 bool RANDOM_BREATH_RAINBOW(effect_params_t* params) {
-    
+
     if (!params->init) {
         // Change one LED every tick, make sure speed is not 0
         doRandom_breath_rainbow(rand() % RGB_MATRIX_LED_COUNT, params);
         return false;
     }
-	
+
     RGB_MATRIX_USE_LIMITS(led_min, led_max);
 
     for (uint8_t i = led_min; i < led_max; i++) {

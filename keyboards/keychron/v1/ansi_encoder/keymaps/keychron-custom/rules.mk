@@ -1,0 +1,16 @@
+# LTO_ENABLE = yes
+VIA_ENABLE = yes
+ENCODER_MAP_ENABLE = no
+RGB_MATRIX_CUSTOM_USER = yes
+KEY_LOCK_ENABLE = yes
+OS_DETECTION_ENABLE = yes
+DEFERRED_EXEC_ENABLE = yes
+TAP_DANCE_ENABLE = yes
+DIP_SWITCH_ENABLE = yes
+ENCODER_CUSTOM_MAP = yes
+
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+
+VPATH += keyboards/keychron/common
+SRC += keychron_common.c
