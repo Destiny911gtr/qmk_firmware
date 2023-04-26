@@ -4,7 +4,7 @@
 // #define ENABLE_RGB_DEBUG
 
 /* LED matrix */
-#define RGB_MATRIX_TIMEOUT 600000
+#define RGB_MATRIX_TIMEOUT 1800000
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_CYCLE_SPIRAL
 
 /* Tap dance timeout */
