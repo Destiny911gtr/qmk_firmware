@@ -34,9 +34,13 @@ bool dip_switch_update_kb(uint8_t index, bool active) {
     if (index == 0) {
         default_layer_set(1UL << (active ? 2 : 0));
         if (active) {
-            rgb_matrix_enable_noeeprom();
+            rgb_matrix_sethsv(172, 255, 255);
+            rgb_matrix_set_speed_noeeprom(91);
+            rgb_matrix_mode(RGB_MATRIX_ALPHAS_MODS);
         } else {
-            rgb_matrix_disable_noeeprom();
+            rgb_matrix_sethsv(197,207,255);
+            rgb_matrix_set_speed_noeeprom(127);
+            rgb_matrix_mode(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
         }
     }
     return true;
@@ -87,3 +91,11 @@ bool rgb_matrix_indicators_advanced_kb(uint8_t led_min, uint8_t led_max) {
 }
 
 #endif // CAPS_LOCK_LED_INDEX
+
+// void keyboard_post_init_user(void) {
+//   // Customise these values to desired behaviour
+//   debug_enable=true;
+//   debug_matrix=true;
+//   //debug_keyboard=true;
+//   //debug_mouse=true;
+// }
