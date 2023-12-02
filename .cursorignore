@@ -1,0 +1,5 @@
+/keyboards/*
+!/keyboards/keychron/
+/keyboards/keychron/*
+!/keyboards/keychron/v1/
+/lib/*

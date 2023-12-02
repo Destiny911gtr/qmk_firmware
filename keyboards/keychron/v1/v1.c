@@ -35,8 +35,8 @@ bool dip_switch_update_kb(uint8_t index, bool active) {
         default_layer_set(1UL << (active ? 2 : 0));
         if (active) {
             rgb_matrix_sethsv(6, 255, 255);
-            rgb_matrix_set_speed_noeeprom(8);
-            rgb_matrix_mode(RGB_MATRIX_CUSTOM_STAR_LIGHT);
+            rgb_matrix_set_speed_noeeprom(127);
+            rgb_matrix_mode(RGB_MATRIX_RIVERFLOW);
         } else {
             rgb_matrix_sethsv(197,255,255);
             rgb_matrix_set_speed_noeeprom(127);
