@@ -40,7 +40,7 @@ bool dip_switch_update_kb(uint8_t index, bool active) {
         } else {
             rgb_matrix_sethsv(197,255,255);
             rgb_matrix_set_speed_noeeprom(127);
-            rgb_matrix_mode(RGB_MATRIX_CUSTOM_CANDY_SPLASH);
+            rgb_matrix_mode(RGB_MATRIX_STARLIGHT);
         }
     }
     return true;
