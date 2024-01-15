@@ -605,6 +605,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
             signalrgb_firmware_type();
             break;
         }
+
         default: {
             // The command ID is not known
             // Return the unhandled state
