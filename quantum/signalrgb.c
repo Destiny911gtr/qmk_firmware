@@ -23,7 +23,7 @@ void get_qmk_version(void) //Grab the QMK Version the board's firmware is built 
         raw_hid_send(packet, 32);
 }
 
-void get_signalrgb_protocol_version(void) 
+void get_signalrgb_protocol_version(void)
 {
         packet[0] = GET_PROTOCOL_VERSION;
         packet[1] = PROTOCOL_VERSION_BYTE_1;
@@ -46,15 +46,24 @@ void get_unique_identifier(void) //Grab the unique identifier for each specific 
 void led_streaming(uint8_t *data) //Stream data from HID Packets to Keyboard.
 {
     uint8_t index = data[1];
-    uint8_t numberofleds = data[2]; 
+    uint8_t numberofleds = data[2];
+    #if defined(RGBLIGHT_ENABLE)
+        if(index + numberofleds > RGBLED_NUM) {
+    #elif defined(RGB_MATRIX_ENABLE)
+        if(index + numberofleds > RGB_MATRIX_LED_COUNT) {
+    #endif
+        packet[1] = DEVICE_ERROR_LED_BOUNDS;
+        raw_hid_send(packet,32);
+        return;
+    }
 
     if(numberofleds >= 10)
     {
-        packet[1] = DEVICE_ERROR_LEDS;
+        packet[1] = DEVICE_ERROR_LED_COUNT;
         raw_hid_send(packet,32);
-        return; 
-    } 
-    
+        return;
+    }
+
     for (uint8_t i = 0; i < numberofleds; i++)
     {
       uint8_t offset = (i * 3) + 3;
@@ -120,11 +129,11 @@ void get_firmware_type(void) //Grab which fork of qmk a board is running.
     raw_hid_send(packet, 32);
 }
 
-void raw_hid_receive(uint8_t *data, uint8_t length) 
+void raw_hid_receive(uint8_t *data, uint8_t length)
 {
         switch (data[0]) {
         case GET_QMK_VERSION:
-           
+
         get_qmk_version();
 
         break;
@@ -138,19 +147,19 @@ void raw_hid_receive(uint8_t *data, uint8_t length)
         get_unique_identifier();
 
         break;
-        case STREAM_RGB_DATA: 
+        case STREAM_RGB_DATA:
 
         led_streaming(data);
 
         break;
 
-        case SET_SIGNALRGB_MODE_ENABLE: 
+        case SET_SIGNALRGB_MODE_ENABLE:
 
         signalrgb_mode_enable();
 
         break;
 
-        case SET_SIGNALRGB_MODE_DISABLE: 
+        case SET_SIGNALRGB_MODE_DISABLE:
 
         signalrgb_mode_disable();
 

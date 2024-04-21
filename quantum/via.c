@@ -181,7 +181,7 @@ __attribute__((weak)) void via_set_device_indication(uint8_t value) {
 
 uint8_t packet[32];
 
- void get_qmk_version(void) //Grab the QMK Version
+void get_qmk_version(void) //Grab the QMK Version
 {
         packet[0] = id_signalrgb_qmk_version;
         packet[1] = QMK_VERSION_BYTE_1;
@@ -215,10 +215,19 @@ void led_streaming(uint8_t *data) //Stream data from HID Packets to Keyboard.
 {
     uint8_t index = data[1];
     uint8_t numberofleds = data[2];
+    #if defined(RGBLIGHT_ENABLE)
+        if(index + numberofleds > RGBLED_NUM) {
+    #elif defined(RGB_MATRIX_ENABLE)
+        if(index + numberofleds > RGB_MATRIX_LED_COUNT) {
+    #endif
+        packet[1] = DEVICE_ERROR_LED_BOUNDS;
+        raw_hid_send(packet,32);
+        return;
+    }
 
     if(numberofleds >= 10)
     {
-        packet[1] = DEVICE_ERROR_LEDS;
+        packet[1] = DEVICE_ERROR_LED_BOUNDS;
         raw_hid_send(packet,32);
         return;
     }
@@ -248,12 +257,16 @@ void led_streaming(uint8_t *data) //Stream data from HID Packets to Keyboard.
       #elif defined(RGB_MATRIX_ENABLE)
       rgb_matrix_set_color(index + i, r, g, b);
       #endif
-      }
-}
+        }
+     }
+//}
 
 void signalrgb_mode_enable(void)
 {
     #if defined(RGB_MATRIX_ENABLE)
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE); //Set RGB Matrix to none to allow a re-init.
+    rgb_matrix_disable_noeeprom();
+    rgb_matrix_enable_noeeprom();
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SIGNALRGB); //Set RGB Matrix to SignalRGB Compatible Mode
     #endif
 }
